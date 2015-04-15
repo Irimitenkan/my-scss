@@ -1,0 +1,55 @@
+@import "variables";
+
+@mixin border-radius($radius) {
+  -webkit-border-radius: $radius;
+  -moz-border-radius: $radius;
+  -ms-border-radius: $radius;
+  border-radius: $radius;
+}
+
+@mixin linear-gradient($angle, $start, $stop, $from: 0%, $to: 100%) {
+  background: $start;
+  background: -webkit-gradient(linear, left top, right bottom, color-stop(0%, #00a993), color-stop(100%, #003732));
+  background: -moz-linear-gradient($angle, $start $from, $stop $to);
+  //background: -moz-gradient($angle, $start $from, $stop $to);
+  background: -webkit-linear-gradient($angle, $stop $from, $start $to);
+  background: -o-linear-gradient($angle, $start $from, $stop $to);
+  background: -ms-linear-gradient($angle, $start $from, $stop $to);
+  background: linear-gradient($angle, $start $from, $stop $to);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#{$start}', endColorstr='#{$stop}', GradientType=1);
+}
+
+@mixin background-image($image) {
+  background-image: url(#{$escToRoot}#{$image});
+}
+
+@mixin box-shadow($h-shadow, $v-shadow, $blur, $spread, $color: black) {
+  box-shadow: $h-shadow $v-shadow $blur $spread $color;
+  -webkit-box-shadow: $h-shadow $v-shadow $blur $spread $color;
+  -mox-box-shadow: $h-shadow $v-shadow $blur $spread $color;
+}
+
+@mixin otacity($x) {
+
+  opacity: #{$x};
+  filter: alpha(opacity=$x); /* For IE8 and earlier */
+}
+
+@mixin vertical-center(){
+  position: absolute;
+  bottom: 50%;
+  -webkit-transform: translate(0px, 50%);
+  -moz-transform: translate(0px, 50%);
+  -ms-transform: translate(0px, 50%);
+  -o-transform: translate(0px, 50%);
+  transform: translate(0px, 50%);
+}
+@mixin horizontal-center(){
+  position: absolute;
+  right: 50%;
+  -webkit-transform: translate(50%, 0px);
+  -moz-transform: translate(50%, 0px);
+  -ms-transform: translate(50%, 0px);
+  -o-transform: translate(50%, 0px);
+  transform: translate(50%, 0px);
+}

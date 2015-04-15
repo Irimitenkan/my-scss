@@ -1,0 +1,6 @@
+@import "../core/mixins";
+.well {
+  @include border-radius($border-radius);
+  border: none;
+  padding: 0px 0px;
+}
