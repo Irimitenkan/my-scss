@@ -30,7 +30,9 @@ module.exports = function(grunt) {
                 }
             },
             build: {
-
+                files: {
+                    'css/style/style.min.css': ['css/style/style.min.css']
+                }
             }
         },
         bower: {
@@ -48,18 +50,27 @@ module.exports = function(grunt) {
                     {expand: true, cwd: 'lib/matchHeight/' ,src: ['**/jquery.matchHeight-min.js'], dest: 'js/lib/', filter: 'isFile'},
                 ]
             }
+        },
+        sprite:{
+            all: {
+                src: 'src/sprites/*.png',
+                dest: 'sprites/spritesheet.png',
+                destCss: 'css/style/core/_sprites.scss'
+            }
         }
+
     });
 
-
-    // Load the plugin that provides the "uglify" task.
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-bower-task');
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
+    grunt.loadNpmTasks('grunt-spritesmith');
 
     // Default task(s).
     grunt.registerTask('default', ['uglify']);
+    //produce
+    grunt.registerTask('produce', ['uglify:build', 'cssmin:build']);
     // Set Up task
     grunt.registerTask('setUp', ['bower:install', 'uglify:libUglify', 'cssmin:libUglify', 'copy:setUp']);
 };
