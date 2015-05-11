@@ -29,8 +29,7 @@
   -mox-box-shadow: $h-shadow $v-shadow $blur $spread $color;
 }
 
-@mixin otacity($x) {
-
+@mixin opacity($x) {
   opacity: #{$x};
   filter: alpha(opacity=$x); /* For IE8 and earlier */
 }
@@ -54,6 +53,6 @@
   transform: translate(50%, 0px);
 }
 
-@mixin image-url($name){
-
+@mixin image-url($name) {
+  @return url(#{$escToRoot}#{$imageFolder});
 }
