@@ -3,18 +3,19 @@ module.exports = function(grunt) {
     // Project configuration.
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
+        config: grunt.file.readJSON('config.json'),
         uglify: {
             options: {
                 banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
             },
             build: {
-                src: 'src/script.js',
-                dest: 'js/script.min.js'
+                src: 'src/js/script.js',
+                dest: '<%= config.jsFolder %>/script.min.js'
             },
             libUglify: {
                 files: {
-                    'js/lib/jquery.min.js': ['lib/jquery/jquery.js'],
-                    'js/lib/bootstrap.min.js': ['lib/sass-bootstrap/bootstrap.js']
+                    '<%= config.jsFolder %>/lib/jquery.min.js': ['lib/jquery/jquery.js'],
+                    '<%= config.jsFolder %>/lib/bootstrap.min.js': ['lib/sass-bootstrap/bootstrap.js']
 
                 }
             }
@@ -26,28 +27,42 @@ module.exports = function(grunt) {
             },
             libUglify: {
                 files: {
-                    'css/bootstrap.min.css': ['lib/sass-bootstrap/bootstrap.css']
+                    '<%= config.cssFolder %>/bootstrap.min.css': ['lib/sass-bootstrap/bootstrap.css']
                 }
             },
             build: {
                 files: {
-                    'css/style/style.min.css': ['css/style/style.min.css']
+                    'src/style/style.min.css': ['<%= config.cssFolder %>/style.min.css']
                 }
             }
         },
         bower: {
             install: {
                 options: {
-                    cleanBowerDir: true,
                     layout: "byType"
                 }
             }
         },
+        clean: {
+            setUp: ["bower_components", "lib"]
+        },
         copy: {
             setUp: {
                 files: [
-                    {expand: true, cwd: 'lib/sass-bootstrap/' ,src: ['**/glyphicons*.*'], dest: 'fonts/', filter: 'isFile'},
-                    {expand: true, cwd: 'lib/matchHeight/' ,src: ['**/jquery.matchHeight-min.js'], dest: 'js/lib/', filter: 'isFile'},
+                    {expand: true, cwd: 'lib/sass-bootstrap/' ,src: ['**/glyphicons*.*'], dest: '<%= config.fontsFolder %>/', filter: 'isFile'},
+                    {expand: true, cwd: 'lib/matchHeight/' ,src: ['**/jquery.matchHeight-min.js'], dest: '<%= config.jsFolder %>/lib/', filter: 'isFile'},
+                ]
+            },
+            fontAwesome: {
+                files: [
+                    {expand: true, cwd: 'bower_components/fonts' ,src: ['**/*.*'], dest: '<%= config.fontsFolder %>/', filter: 'isFile'},
+                    {expand: true, cwd: 'bower_components/scss' ,src: ['**/*.*'], dest: 'src/style/lib/font-awesome', filter: 'isFile'}
+                ]
+            },
+            build:{
+                files: [
+                    {expand: true, cwd: 'src/style/style.css' ,src: ['**/*.*'], dest: '<%= config.cssFolder %>/', filter: 'isFile'},
+                    {expand: true, cwd: 'src/js/' ,src: ['**/*.js'], dest: '<%= config.jsFolder %>/', filter: 'isFile'}
                 ]
             }
         },
@@ -55,7 +70,7 @@ module.exports = function(grunt) {
             all: {
                 src: 'src/sprites/*.png',
                 dest: 'sprites/spritesheet.png',
-                destCss: 'css/style/core/_sprites.scss'
+                destCss: 'src/style/core/_sprites.scss'
             }
         }
 
@@ -66,11 +81,12 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-spritesmith');
+    grunt.loadNpmTasks('grunt-contrib-clean');
 
     // Default task(s).
-    grunt.registerTask('default', ['uglify']);
+    grunt.registerTask('default', ['copy:build']);
     //produce
     grunt.registerTask('produce', ['uglify:build', 'cssmin:build']);
     // Set Up task
-    grunt.registerTask('setUp', ['bower:install', 'uglify:libUglify', 'cssmin:libUglify', 'copy:setUp']);
+    grunt.registerTask('setUp', ['bower:install', 'uglify:libUglify', 'cssmin:libUglify', 'copy:setUp', 'copy:fontAwesome', 'clean:setUp']);
 };

@@ -1,4 +1,8 @@
 @import "variables";
+@import "triangle";
+@import "functions";
+@import "aspect-ration";
+@import "linx";
 
 @mixin border-radius($radius) {
   -webkit-border-radius: $radius;
@@ -34,6 +38,12 @@
   filter: alpha(opacity=$x); /* For IE8 and earlier */
 }
 
+@mixin hide-text(){
+  text-indent: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
 @mixin vertical-center(){
   position: absolute;
   bottom: 50%;
@@ -53,6 +63,37 @@
   transform: translate(50%, 0px);
 }
 
+@mixin floatint-boxes($num, $space, $wspace){
+  $whole-space-between: $space*($num - 1);
+  float: left;
+  width: calc((100% - #{$whole-space-between}px) / #{$num});
+  margin: #{$wspace/2}px #{$space/2}px;
+  &:nth-of-type(#{$num}n + #{$num}){
+    margin-right: 0px;
+  }
+  &:nth-of-type(#{$num}n + 1){
+    margin-left: 0px;
+  }
+}
+
+@mixin user-select($opt: none){
+  -webkit-touch-callout: $opt;
+  -webkit-user-select: $opt;
+  -khtml-user-select: $opt;
+  -moz-user-select: $opt;
+  -ms-user-select: $opt;
+  user-select: $opt;
+}
+
+@mixin clearfix {
+  &:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+}
+
+/*
 @mixin image-url($name) {
   @return url(#{$escToRoot}#{$imageFolder});
-}
+}*/

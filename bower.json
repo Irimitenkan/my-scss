@@ -4,7 +4,8 @@
   "dependencies": {
     "sass-bootstrap": "~3.0.0",
     "jquery": "~1.10.2",
-    "matchHeight": "~0.6.0"
+    "matchHeight": "~0.6.0",
+    "components-font-awesome": "~4.3.0"
   },
   "private": true
 }
