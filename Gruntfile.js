@@ -31,9 +31,13 @@ module.exports = function(grunt) {
                 }
             },
             build: {
-                files: {
-                    'src/style/style.min.css': ['<%= config.cssFolder %>/style.min.css']
-                }
+				files: [{
+					expand: true,
+					cwd: '<%= config.cssFolder %>/',
+					src: ['*.css', '!*.min.css'],
+					dest: '<%= config.cssFolder %>/',
+					ext: '.min.css'
+				}]
             }
         },
         bower: {
@@ -61,7 +65,7 @@ module.exports = function(grunt) {
             },
             build:{
                 files: [
-                    {expand: true, cwd: 'src/style/style.css' ,src: ['**/*.*'], dest: '<%= config.cssFolder %>/', filter: 'isFile'},
+                    //{expand: true, cwd: 'src/style/' ,src: ['**/*.css'], dest: '<%= config.cssFolder %>/', filter: 'isFile'},
                     {expand: true, cwd: 'src/js/' ,src: ['**/*.js'], dest: '<%= config.jsFolder %>/', filter: 'isFile'}
                 ]
             }
@@ -72,7 +76,18 @@ module.exports = function(grunt) {
                 dest: 'sprites/spritesheet.png',
                 destCss: 'src/style/core/_sprites.scss'
             }
-        }
+        },
+		sass: {
+			dist: {
+				files: [{
+					expand: true,
+					cwd: 'src/style/',
+					src: ['*.scss'],
+					dest: '<%= config.cssFolder %>/',
+					ext: '.css'
+				}]
+			}
+		}
 
     });
 
@@ -82,11 +97,12 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-spritesmith');
     grunt.loadNpmTasks('grunt-contrib-clean');
+	grunt.loadNpmTasks('grunt-contrib-sass');
 
     // Default task(s).
-    grunt.registerTask('default', ['copy:build']);
+    grunt.registerTask('default', ['sass','copy:build']);
     //produce
-    grunt.registerTask('produce', ['uglify:build', 'cssmin:build']);
+    grunt.registerTask('produce', ['uglify:build', 'sass','cssmin:build']);
     // Set Up task
     grunt.registerTask('setUp', ['bower:install', 'uglify:libUglify', 'cssmin:libUglify', 'copy:setUp', 'copy:fontAwesome', 'clean:setUp']);
 };
